@@ -26,7 +26,7 @@ if engel ile karakter carpısırsa oyun bitecek
     margin-top: 50px;
     width:700px;
     height:500px;
-    background-color: #e1e1e1;
+    background-image: url("arkaplan.png");
     overflow: hidden;
   }
 
@@ -37,7 +37,10 @@ if engel ile karakter carpısırsa oyun bitecek
     width:100px;
     left:150px;
     bottom: 50px;
-    background-color: purple;
+    background-image: url("koyun2.png");
+    background-repeat: no-repeat;
+    background-position: bottom;
+
   }
 
   #Ground
@@ -46,15 +49,17 @@ if engel ile karakter carpısırsa oyun bitecek
     height: 50px;
     width:700px;
     bottom: 0;
-    background-color: green;
+    background-image: url("zemin.png");
   }
   #Item
   {
     position: absolute;
     height: 75px;
     width:50px;
-    background-color: black;
-   bottom: 50px;
+    background-image: url("engel.png");
+    background-repeat: no-repeat;
+    background-position: top;
+    bottom: 50px;
     right: -50px;
 
   }
@@ -78,6 +83,7 @@ if engel ile karakter carpısırsa oyun bitecek
       var f2;
       var f3;
       var f4;
+      var f5;
       var score = 0;
       var animateSpeed=2000;
 
@@ -163,10 +169,13 @@ if engel ile karakter carpısırsa oyun bitecek
 
       function myStartInterval()
       {
-         window.f1 = setInterval(Control,10);
+        window.f1 = setInterval(Control,10);
         window.f2 = setInterval(ItemMove,10);
         window.f3 = setInterval(ScoreCount,100);
         window.f4 = setInterval(FasterSpeed,100);
+        window.f5 = setInterval(SheepAct,333);
+
+
       }
 
 
@@ -176,6 +185,8 @@ if engel ile karakter carpısırsa oyun bitecek
         clearInterval(window.f2);
         clearInterval(window.f3);
         clearInterval(window.f4);
+        clearInterval(window.f5);
+
       }
 
       function ScoreCount()
@@ -188,6 +199,23 @@ if engel ile karakter carpısırsa oyun bitecek
       {
         animateSpeed-=3;
       }
+
+
+      var SheepRun = 2;
+
+      function SheepAct()
+      {
+        var sheep = $("#Sheep");
+        var x = "koyun"+SheepRun+".png";
+        sheep.css("background-image","url("+x+")");
+
+        if(SheepRun == 3){SheepRun =2;}
+        else {
+          SheepRun++;
+        }
+      }
+
+      SheepAct();
 
 
 
