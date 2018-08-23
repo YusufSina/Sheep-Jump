@@ -1,0 +1,232 @@
+<!--
+Oyun paneli olacak *div
+Karakter div olacak
+engeller div olacak
+Karakter Oldugu yerde zıplayabilecek
+engeller random olusup sola dogru kayacak
+if engel ile karakter carpısırsa oyun bitecek
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <link href="https://fonts.googleapis.com/css?family=Share+Tech+Mono" rel="stylesheet">
+
+  <style>
+  body
+  {
+    font-family: 'Share Tech Mono', monospace;
+
+  }
+  #screen
+  {
+    position: relative;
+    margin:auto;
+    margin-top: 50px;
+    width:700px;
+    height:500px;
+    background-color: #e1e1e1;
+    overflow: hidden;
+  }
+
+  #Sheep
+  {
+    position: absolute;
+    height: 100px;
+    width:100px;
+    left:150px;
+    bottom: 50px;
+    background-color: purple;
+  }
+
+  #Ground
+  {
+    position: absolute;
+    height: 50px;
+    width:700px;
+    bottom: 0;
+    background-color: green;
+  }
+  #Item
+  {
+    position: absolute;
+    height: 75px;
+    width:50px;
+    background-color: black;
+   bottom: 50px;
+    right: -50px;
+
+  }
+
+  #Score
+  {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 20px;
+
+  }
+  </style>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+
+      var GameDurum = 0;
+      var f1;
+      var f2;
+      var f3;
+      var f4;
+      var score = 0;
+      var animateSpeed=2000;
+
+      function SheepJump()
+      {
+        var sheep = $("#Sheep");
+        var ground = $("#Ground");
+        var sheepBottom = sheep.position().top + sheep.height();
+        var groundTop = ground.position().top;
+
+        if(sheepBottom == groundTop)
+        {
+          sheep.animate({top:'100px'},500);    //sheep.position().left
+          sheep.animate({top:'350px'},500);
+        }else return;
+
+
+
+      }
+
+      function ItemMove()
+      {
+        var item = $("#Item");
+        item.animate({left:'-50px'},animateSpeed);
+
+
+
+
+      }
+
+      function Control()
+      {
+        var sheep = $("#Sheep");
+        var item = $("#Item");
+
+        var sheepBottom = sheep.position().top + sheep.height();
+        var sheepRight = sheep.position().left + sheep.width();
+        var sheepTop = sheep.position().top;
+        var sheepLeft = sheep.position().left;
+
+        var itemBottom = item.position().top + item.height();
+        var itemRight = item.position().left + item.width();
+        var itemTop = item.position().top;
+        var itemLeft = item.position().left;
+
+        if((itemLeft < sheepRight)&&(itemRight > sheepLeft)&&(itemTop <= sheepBottom))
+        {
+          GameOver();
+
+        }else if(itemLeft == -50)
+        {
+          $("#Item").remove();
+          $("#screen").append("<div id='Item'></div>");
+        }else return;
+      }
+
+
+      function GameOver()
+      {
+        GameDurum = 0;
+        animateSpeed=2000;
+        myStopInterval();
+        document.getElementById("h1").innerHTML = "Start !";
+        document.getElementById("h2").innerHTML = "Press Enter to Start :)";
+
+        alert("Game over. Score : "+ score);
+        score = 0;
+        return;
+      }
+
+      function GameStart()
+      {
+        GameDurum = 1;
+        myStartInterval();
+
+        document.getElementById("h1").innerHTML = "You're playing !";
+        document.getElementById("h2").innerHTML = "Press Arrow Up or Space or W to Jump :)";
+
+      }
+
+      var f1;
+      var f2;
+
+      function myStartInterval()
+      {
+         window.f1 = setInterval(Control,10);
+        window.f2 = setInterval(ItemMove,10);
+        window.f3 = setInterval(ScoreCount,100);
+        window.f4 = setInterval(FasterSpeed,100);
+      }
+
+
+      function myStopInterval()
+      {
+        clearInterval(window.f1);
+        clearInterval(window.f2);
+        clearInterval(window.f3);
+        clearInterval(window.f4);
+      }
+
+      function ScoreCount()
+      {
+        score ++;
+        document.getElementById("myScore").innerHTML = score;
+      }
+
+      function FasterSpeed()
+      {
+        animateSpeed-=3;
+      }
+
+
+
+      $(document).keydown(function(e){
+        if((e.which == 32 || e.which == 38 || e.which ==87) && GameDurum ==1)
+        {
+          SheepJump();
+        }else if(e.which == 13)
+        {
+          if(GameDurum == 0)
+          {
+            GameStart();
+          }else return;
+
+        }
+      });
+
+    });
+  </script>
+
+</head>
+<body>
+  <center>
+  <h1 id="h1">Start !</h1>
+  <h2 id="h2">Press Enter to Start :)</h2>
+</center>
+  <div id="screen">
+    <div id="Score">
+      <span >S </span><span id="myScore">0</span>
+    </div>
+    <div id="Sheep">
+
+    </div>
+    <div id="Item">
+
+    </div>
+    <div id="Ground">
+
+    </div>
+  </div>
+</body>
+</html>
